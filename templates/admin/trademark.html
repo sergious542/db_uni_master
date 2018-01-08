@@ -1,0 +1,24 @@
+{% extends "admin/layout.html" %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block scripts %}
+
+{% endblock %}
+{% block menu %}
+    {#<a href="{{ url_for('new_product',id=id_shop) }}"><input type="button" value="{{ locale[request.cookies.get('locale')]['add_prod'] }}"></a>#}
+{% endblock %}
+{% block content%}
+    <form action="#" method="post">
+        <input type="text" name="trademark" required><input type="submit" value="add">
+    </form>
+    <table>
+    <tr><th></th></tr>
+        {% for t in tra %}
+            <tr><td>{{ t[1] }}</td></tr>
+        {% endfor %}
+
+    </table>
+
+
+{% endblock %}

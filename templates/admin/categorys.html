@@ -1,0 +1,143 @@
+{% extends "admin/layout.html" %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block scripts %}
+<script>
+    var curr = 0;
+    function add_text() {
+        mdiv = document.getElementById('fds');
+        ediv = document.createElement("div");
+
+        inp = document.createElement("input");
+        inp.setAttribute('type', 'text');
+        inp.setAttribute('name', 'type_' );
+        inp.setAttribute('id', 'prj' + curr);
+        //inp.setAttribute('size', '40');
+        inp.setAttribute('value', 'text');
+        inp1 = document.createElement("input");
+        inp1.setAttribute('type', 'text');
+        inp1.setAttribute('name', 'name_' );
+        inp1.setAttribute('id', 'prj' + curr);
+        //inp1.setAttribute('size', '40');
+        //inp1.setAttribute('value', 'text');
+        ediv.appendChild(inp);
+        ediv.appendChild(inp1);
+        mdiv.appendChild(ediv);
+    }
+
+    function add_number() {
+        mdiv = document.getElementById('fds');
+        ediv = document.createElement("div");
+
+        inp = document.createElement("input");
+        inp.setAttribute('type', 'text');
+        inp.setAttribute('name', 'type_' );
+        inp.setAttribute('id', 'prj' + curr);
+        //inp.setAttribute('size', '40');
+        inp.setAttribute('value', 'number');
+        inp1 = document.createElement("input");
+        inp1.setAttribute('type', 'text');
+        inp1.setAttribute('name', 'name_' );
+        inp1.setAttribute('id', 'prj' + curr);
+        //inp1.setAttribute('size', '40');
+        //inp1.setAttribute('value', 'text');
+        ediv.appendChild(inp);
+        ediv.appendChild(inp1);
+        mdiv.appendChild(ediv);
+    }
+
+    function add_checkbox() {
+        mdiv = document.getElementById('fds');
+        ediv = document.createElement("div");
+
+        inp = document.createElement("input");
+        inp.setAttribute('type', 'text');
+        inp.setAttribute('name', 'type_' );
+        inp.setAttribute('id', 'prj' + curr);
+        //inp.setAttribute('size', '40');
+        inp.setAttribute('value', 'checkbox');
+        inp1 = document.createElement("input");
+        inp1.setAttribute('type', 'text');
+        inp1.setAttribute('name', 'name_');
+        inp1.setAttribute('id', 'prj' + curr);
+        //inp1.setAttribute('size', '40');
+        //inp1.setAttribute('value', 'text');
+        ediv.appendChild(inp);
+        ediv.appendChild(inp1);
+        mdiv.appendChild(ediv);
+    }
+
+    function add_next() {
+        id = document.getElementById('type').value;
+        curr++;
+        if (id == 1){
+            add_text()
+        }
+        else if(id == 2){
+            add_number()
+        }
+        else if(id == 3){
+            add_checkbox()
+        }
+    }
+</script>
+{% endblock %}
+{% block menu %}
+    {#<a href="{{ url_for('new_product',id=id_shop) }}"><input type="button" value="{{ locale[request.cookies.get('locale')]['add_prod'] }}"></a>#}
+{% endblock %}
+{% block content%}
+    <form method="post">
+        <input type="text" name="category" required>
+        <div id="fds">
+            <div>
+                <select id="type">
+                    <option value="1">text</option>
+                    <option value="2">number</option>
+                    <option value="3">checkbox</option>
+                </select>
+                <input type="button" value="OK" onClick="add_next();">
+             </div>
+        </div>
+        <input type="submit" value="добавить">
+    </form>
+    {% if categorys %}
+        <table border="2" width="50%">
+        <tr>
+            <th>№</th>
+            <th>название</th>
+            <th>прочее</th>
+            <th></th>
+        </tr>
+        {% for c in categorys %}
+            <tr>
+                <td>{{ c[0] }}</td>
+                <td>{{ c[1] }}</td>
+                <td>{% if c[2] %}
+                    <table {#border="1"#} width="100%">
+                    <tr>
+                        <th>название поля</th>
+                        <th>тип</th>
+                    </tr>
+                    {% for cc in c[2] %}
+                        <tr>
+                            <td>{{ c[2][cc]['name'] }}</td>
+                            <td>{{ c[2][cc]['type'] }}</td>
+                        </tr>
+                    {% endfor %}
+                    </table>
+                    {% else %}
+                    ---
+                    {% endif %}
+
+                </td>
+            <td>
+                <a href="{{ url_for('add_product',id_category=c[0]) }}"><input type="button" value="add"></a>
+            </td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% else %}
+    {% endif %}
+
+{% endblock %}

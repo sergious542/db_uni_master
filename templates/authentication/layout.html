@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   {% block head %}
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+       <script src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
+       <script src="{{ url_for('static', filename='js/jquery.maskedinput.min.js') }}"></script>
+
+
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        {#<link rel="stylesheet" href="{{ url_for('static', filename='style_pagination.css') }}">#}
+
+        {#<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>#}
+    {% endblock %}
+{% block scripts %}{% endblock %}
+            </head>
+<body>
+<div id="logo">{% block header %}<font size="18" color="#f0ffff" face="Bedrock" >для салонов</font>{% endblock %}</div>
+<div id="logout">{% block logout %}<a  href="{{ url_for('sign_out') }}"><input type="button" value="выход"> </a> {% endblock %}</div>
+<div id="find">{% block filter %}{% endblock %}</div>
+<div id="menu_site">{% block menu %}{% endblock %}</div>
+<div id="left_menu">{% block left_minu %}
+    {#<a href="{{ url_for('lodgers') }}"><input type="button" value="жильцы"></a><br>#}
+   {# <a href="{{ url_for('providers') }}"><input type="button" value="поставщики"></a><br>
+    #}{#<a href="{{ url_for('category') }}"><input type="button" value="категории"></a><br>#}{#
+    <a href="{{ url_for('category_update') }}"><input type="button" value="категории"></a><br>
+    <a href="{{ url_for('cities') }}"><input type="button" value="города"></a><br>
+    <a href="{{ url_for('shares') }}"><input type="button" value="новости"></a><br>
+    <a href="{{ url_for('professions') }}"><input type="button" value="профессии"></a><br>
+    <a href="{{ url_for('trademarks') }}"><input type="button" value="торговые марки"></a><br>#}
+{% endblock %}</div>
+<div id="content">{% block content %}{%endblock %}</div>
+</body>
+</html>

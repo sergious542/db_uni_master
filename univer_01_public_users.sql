@@ -1,0 +1,4 @@
+INSERT INTO users (id_users, full_name, mail, password_hash, phone, ref_id_city) VALUES (3, 'Денис Щ', 'den20vekfox@gmail.com', '79aef731091472c4395b63b32b2c00c919b9d9538dc1c990381cc8c4609fe9f8', '+38(123) 132-1321', 1);
+INSERT INTO users (id_users, full_name, mail, password_hash, phone, ref_id_city) VALUES (4, 'denis', 'denis@denis', '79aef731091472c4395b63b32b2c00c919b9d9538dc1c990381cc8c4609fe9f8', '+38(111) 111-1111', 1);
+INSERT INTO users (id_users, full_name, mail, password_hash, phone, ref_id_city) VALUES (5, '12345', 'dd@ff', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', '+38(123) 122-3123', 1);
+INSERT INTO users (id_users, full_name, mail, password_hash, phone, ref_id_city) VALUES (6, 'sdfsdf', 'denis@denis22', '84672732b7df38054635c6a2b77101801a616337b021b292f7bd0381338f7336', '+38(123) 243-1423', 1);

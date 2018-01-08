@@ -1,0 +1,39 @@
+{% extends "authentication/layout.html" %}
+{% block head %}
+    {{ super() }}
+    <style>
+    tr{
+        text-align: center;
+    }
+    </style>
+{% endblock %}
+{% block scripts %}
+
+{% endblock %}
+{% block filter %}{% endblock %}
+{% block menu %}
+    <a href="{{ url_for('get_products_au') }}"><input type="button" value="back"></a>
+    {#<a href="{{ url_for('new_product',id=id_shop) }}"><input type="button" value="{{ locale[request.cookies.get('locale')]['add_prod'] }}"></a>#}
+{% endblock %}
+{% block content%}
+    {% if product %}
+       <table>
+              <tr>
+                <th>артикул</th>
+                <th>название</th>
+                <th>цена</th>
+                <th></th>
+              </tr>
+              {% for p in product %}
+                  <tr>
+                    <td>{{ p[1] }}</td>
+                    <td>{{ p[2] }}</td>
+                    <td>{{ p[3] }}</td>
+                    <td><a href="{{ url_for('prod_inf'+request.cookies.get('end_w'),id_product=p[0]) }}"><input type="button" value="подробнее"></a></td>
+                  </tr>
+              {% endfor %}
+
+    {% else %}
+        поиск ничего не дал
+    {% endif %}
+{% endblock %}

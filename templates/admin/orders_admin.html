@@ -1,0 +1,39 @@
+{% extends "admin/layout.html" %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block scripts %}
+
+{% endblock %}
+{% block menu %}
+    {#<a href="{{ url_for('category') }}"><input type="button" value="back"></a>#}
+    {#<a href="{{ url_for('new_product',id=id_shop) }}"><input type="button" value="{{ locale[request.cookies.get('locale')]['add_prod'] }}"></a>#}
+{% endblock %}
+{% block content%}
+    {% if orders %}
+        <table>
+            <tr>
+                <td>номер заказа</td>
+                <td>название</td>
+                <td>количество</td>
+                <td>к оплате</td>
+                <td>дата заказа</td>
+                <td></td>
+            </tr>
+            {% for ord in orders %}
+            <tr>
+                <td>{{ ord[0] }}</td>
+                <td>{{ ord[1] }}</td>
+                <td>{{ ord[2] }}</td>
+                <td>{{ ord[2] * ord[3] }}</td>
+                <td>{{ ord[4] }}</td>
+                <td><a href="{{ url_for('approve_order',id_order=ord[0]) }}"><input type="button" value="принять"></a><br>
+                    <a href="{{ url_for('reject_order',id_order=ord[0]) }}"><input type="button" value="отклонить"></a>
+                </td>
+
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+    {% endif %}
+{% endblock %}

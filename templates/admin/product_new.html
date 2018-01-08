@@ -1,0 +1,29 @@
+{% extends "admin/layout.html" %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block scripts %}
+
+{% endblock %}
+{% block menu %}
+    <a href="{{ url_for('category') }}"><input type="button" value="back"></a>
+    {#<a href="{{ url_for('new_product',id=id_shop) }}"><input type="button" value="{{ locale[request.cookies.get('locale')]['add_prod'] }}"></a>#}
+{% endblock %}
+{% block content%}
+    товар в категорию {{ cat[1] }}
+    <form action="{{ url_for('add_product',id_category=id_cat) }}" method="post">
+    название <input type="text" name="title" required><br>
+    артикул <input type="text" name="article" required><br>
+    цена <input type="number" name="price" required><br>
+    торговая марка <select name="trademark">
+        {% for t in tra %}
+            <option value="{{ t[0] }}">{{ t[1] }}</option>
+        {% endfor %}
+    </select><br>
+    описание <textarea name="description"></textarea><br>
+    {% for c in cat[2] %}
+        {{ cat[2][c]['name'] }} <input type="{{ cat[2][c]['type'] }}" name="{{ cat[2][c]['name'] }}" ><br>
+    {% endfor %}
+    <input type="submit" value="добавить">
+    </form>
+{% endblock %}

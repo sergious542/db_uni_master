@@ -1,0 +1,146 @@
+{% extends "authentication/layout.html" %}
+{% block head %}
+    {{ super() }}
+    <style>
+    tr{
+        text-align: center;
+    }
+    </style>
+{% endblock %}
+{% block scripts %}
+<script>
+    function like(val) {
+        $.ajax({
+            type: 'GET',
+            url: '{{ lik }}/'+'{{ product[0] }}'+'/'+val,
+
+            contentType: false,
+            cache: false,
+            processData: false,
+            async: true,
+            success: function(data) {
+                alert(data);
+
+            },
+        });
+
+    }
+
+    function set_value(){
+        document.getElementById('num1').value = document.getElementById('num').value;
+    }
+
+</script>
+{% endblock %}
+{% block filter %}{% endblock %}
+{% block menu %}
+    {#<a href="{{ url_for('new_product',id=id_shop) }}"><input type="button" value="{{ locale[request.cookies.get('locale')]['add_prod'] }}"></a>#}
+    <a href="{{ url_for('get_products_au') }}"><input type="button" value="back"></a>
+{% endblock %}
+{% block content%}
+
+    {% if product %}
+        <table>
+            <tr>
+                <td rowspan="2"><img src="{{ url_for('static', filename='images/image.svg') }}"></td>
+                <td><h1>{{ product[2] }}</h1></td>
+            </tr>
+            <tr></tr>
+            <tr>
+                <td>артикул</td>
+                <td>{{ product[1] }}</td>
+            </tr>
+            <tr>
+                <td>торговая марка</td>
+                <td>{{ product[5] }}</td>
+            </tr>
+            <tr>
+                <td>цена</td>
+                <td>{{ product[3] }}</td>
+            </tr>
+            <tr>
+                <td>количество</td>
+                <td>
+                    <input value="1" type="number" id="num" min="1" name="quantity_order">
+                    <a href="#win1" class="button button-green"><input type="button" value="заказать" onclick="set_value()"></a>
+                    <a href="#x" class="overlay" id="win1"></a>
+                    <div class="popup">
+                        <form action="{{ url_for('to_order',id_product=product[0]) }}" method="post" style="color: black">
+                            <table width="100%">
+                                <tr>
+                                    <tb>качество товара</tb>
+                                    <tb> 1 <input type="radio" name="product_quality" value="1"> 2 <input type="radio" name="product_quality" value="2"> 3 <input type="radio" name="product_quality" value="3"> 4 <input type="radio" name="product_quality" value="4"> 5 <input type="radio" name="product_quality" value="5" checked><br></tb>
+                                </tr>
+                                <tr>
+                                    <tb>соответствие описанию</tb>
+                                    <tb> 1 <input type="radio" name="compliance_description" value="1"> 2 <input type="radio" name="compliance_description" value="2"> 3 <input type="radio" name="compliance_description" value="3"> 4 <input type="radio" name="compliance_description" value="4"> 5 <input type="radio" name="compliance_description" value="5" checked><br></tb>
+                                </tr>
+                                <tr>
+                                    <tb>доставка в сроки</tb>
+                                    <tb> 1 <input type="radio" name="delivery_on_time" value="1"> 2 <input type="radio" name="delivery_on_time" value="2"> 3 <input type="radio" name="delivery_on_time" value="3"> 4 <input type="radio" name="delivery_on_time" value="4"> 5 <input type="radio" name="delivery_on_time" value="5"checked><br></tb>
+                                </tr>
+                                <tr>
+                                    <tb>соответствие качества цене </tb>
+                                    <tb>1 <input type="radio" name="quality_of_the_price" value="1"> 2 <input type="radio" name="quality_of_the_price" value="2"> 3 <input type="radio" name="quality_of_the_price" value="3"> 4 <input type="radio" name="quality_of_the_price" value="4"> 5 <input type="radio" name="quality_of_the_price" value="5" checked><br></tb>
+                                </tr>
+
+                            </table>
+
+                            <input value="1" type="number" min="1" id="num1" name="quantity_order"><br>
+                            <input type="submit" value="заказять">
+                        </form>
+                        <a class="close" title="Закрыть" href="#close"></a>
+                    </div>
+                    {#<form action="{{ url_for('to_order',id_product=product[0]) }}" method="post">
+                        <input value="1" type="number" min="1" name="quantity_order">
+                        <input type="submit" value="заказять">
+                    </form>#}
+                </td>
+            </tr>
+            {% for c in product[4].keys()  %}
+                <tr><td>{{ c }}</td><td>{{ product[4][c] }} </td></tr>
+            {% endfor %}
+            <tr>
+                <td colspan="2">
+                    описание:
+                    <br>
+                    {% if product[6] %}{{ product[6] }}{% else %}пока нема{% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td><img onclick="like(0)" src="{{ url_for('static', filename='images/smile.svg') }}"></td>
+                <td><img onclick="like(1)" src="{{ url_for('static', filename='images/sad.svg') }}"></td>
+
+            </tr>
+        </table>
+
+        комментарии:
+        <form action="{{ url_for('comment',id_product=id_product) }}" method="post">
+        <table>
+            <tr>
+                <td><textarea name="comment"></textarea></td>
+                <td><button type="submit"><img src="{{ url_for('static', filename='images/plus.svg') }}" width="20px"></button></td>
+            </tr>
+        </table>
+        </form>
+        {% if comments %}
+            {% for c in comments %}
+                <div style="background-color: #3f9db8; margin-top: 10px;width: 50%; border-radius: 25px 25px 25px 25px; text-align: center" >
+                    <table width="100%">
+                        <tr>
+                            <td>имя {{ c[1] }}</td>
+                            <td>дата {{ (c[0]|string)[:-10] }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                {{ c[2] }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            {% endfor %}
+        {% else %}
+            комментарии отсутствуют
+        {% endif %}
+    {% endif %}
+{% endblock %}

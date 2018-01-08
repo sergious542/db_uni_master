@@ -1,0 +1,146 @@
+{% extends "authentication/layout.html" %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+    function create_filter() {
+        var e = document.getElementById('cat').value;
+
+        $.ajax({
+            type: 'GET',
+            url: '{{ cat }}/'+e,
+
+            contentType: false,
+            cache: false,
+            processData: false,
+            async: true,
+            success: function(dat) {
+                //alert(data);
+                fil.innerHTML = dat['text'];
+                data = dat['arr']
+                var text = '<table>';
+                text += '<tr>';
+                text += '<th>артикул</th>';
+                text += '<th>название</th>';
+                text += '<th>цена</th>';
+                text += '<th></th>';
+                text += '</tr>';
+                for (pr in data){
+                    text += '<tr>';
+                    text += '<td>'+data[pr][1]+'</td>';
+                    text += '<td>'+data[pr][2]+'</td>';
+                    text += '<td>'+data[pr][3]+'</td>';
+                    text += '<td><a href="{{ (prod_inf) }}/'+data[pr][0]+'"><input type="button" value="подробнее"></a><td>';
+                    text += '</tr>';
+                }
+                text += '</table>';
+                prod.innerHTML = text;
+            },
+        });
+
+        /*$.ajax({
+            type: 'GET',
+            url: '{#{{ prod_cat }}#}/'+e,
+
+            contentType: false,
+            cache: false,
+            processData: false,
+            async: true,
+            success: function(data) {
+                alert(data)
+                var text = '<table>';
+                text += '<tr>';
+                text += '<th>артикул</th>';
+                text += '<th>название</th>';
+                text += '<th>цена</th>';
+                text += '<th></th>';
+                text += '</tr>';
+                for (pr in data){
+                    text += '<tr>';
+                    text += '<td>'+data[pr][1]+'</td>';
+                    text += '<td>'+data[pr][2]+'</td>';
+                    text += '<td>'+data[pr][3]+'</td>';
+                    text += '<td><a href="{{ ('prod_inf') }}/'+data[pr][0]+'"><input type="button" value="подробнее"></a><td>';
+                    text += '</tr>';
+                }
+                text += '</table>';
+                prod.innerHTML = text;
+                {#location.href = '{{ url_for('providers') }}'#}
+            },
+        });*/
+
+
+
+    }
+    window.onload = function () {
+        var text=''; //find_user
+        text += '<form method="post" action="{{ url_for('find_user',id_category=categorys[0][0]) }}">';
+        {% for c in categorys[0][2] %}
+            {#alert({{ categorys[0][2] }})#}
+            {% if fin %}
+                {% if categorys[0][2][c]['type'] != 'checkbox' %}
+                    text +='{{ categorys[0][2][c]['name'] }} <input type="{{ categorys[0][2][c]['type'] }}" name="{{ categorys[0][2][c]['name'] }}" value="{{ fin[categorys[0][2][c]['name']] }}">';
+                {% else %}
+                    {% if fin[categorys[0][2][c]['name']] == 'True' %}
+                        text +='{{ categorys[0][2][c]['name'] }} <input type="{{ categorys[0][2][c]['type'] }}" name="{{ categorys[0][2][c]['name'] }}" checked>';
+                    {% else %}
+                        text +='{{ categorys[0][2][c]['name'] }} <input type="{{ categorys[0][2][c]['type'] }}" name="{{ categorys[0][2][c]['name'] }}"';
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                text +='{{ categorys[0][2][c]['name'] }} <input type="{{ categorys[0][2][c]['type'] }}" name="{{ categorys[0][2][c]['name'] }}" >';
+            {% endif %}
+        {% endfor %}
+        text += '<input type="submit" value="искать"></form>';
+        fil.innerHTML = text;
+        $.ajax({
+            type: 'GET',
+            url: '{{ url_for('products',id_category=categorys[0][0]) }}',
+
+            contentType: false,
+            cache: false,
+            processData: false,
+            async: true,
+            success: function(data) {
+                //alert(data)
+                var text = '<table>';
+                text += '<tr>';
+                text += '<th>артикул</th>';
+                text += '<th>название</th>';
+                text += '<th>цена</th>';
+                text += '<th></th>';
+                text += '</tr>';
+                for (pr in data){
+                    text += '<tr>';
+                    text += '<td>'+data[pr][1]+'</td>';
+                    text += '<td>'+data[pr][2]+'</td>';
+                    text += '<td>'+data[pr][3]+'</td>';
+                    text += '<td><a href="{{ (prod_inf) }}/'+data[pr][0]+'"><input type="button" value="подробнее"></a><td>';
+                    text += '</tr>';
+                }
+                text += '</table>';
+                prod.innerHTML = text;
+                {#location.href = '{{ url_for('providers') }}'#}
+            },
+        });
+
+    }
+</script>
+{% endblock %}
+{% block filter %}<div id="fil">
+    </div>{% endblock %}
+{% block menu %}
+    {#<a href="{{ url_for('new_product',id=id_shop) }}"><input type="button" value="{{ locale[request.cookies.get('locale')]['add_prod'] }}"></a>#}
+{% endblock %}
+{% block content%}
+
+    <select id="cat" onchange="create_filter()">
+        {% for c in categorys %}
+            <option value="{{ c[0] }}">{{ c[1] }}</option>
+        {% endfor %}
+    </select>
+
+        <div id="prod">    </div>
+
+{% endblock %}
